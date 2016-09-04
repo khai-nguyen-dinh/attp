@@ -1,0 +1,39 @@
+version: "2"
+
+services:
+    mysql:
+      image: mysql:5.7
+      environment:
+          - MYSQL_ROOT_PASSWORD=18101995
+          - MYSQL_USER=ivtest_attp
+          - MYSQL_PASSWORD=18101995
+          - MYSQL_DATABASE=ivtest_attp
+      ports:
+          - "127.0.0.1:3307:3306"
+      networks:
+          - back-tier
+      hostname: mysql
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      links:
+          - mysql
+      ports:
+          - "81:80"
+      networks:
+          - back-tier
+      hostname: phpmyadmin
+    web:
+        image: hitalos/laravel:latest
+        ports:
+            - 82:80
+        links:
+            - mysql
+        volumes:
+            - /app:/var/www
+        networks:
+            - back-tier
+            - front-tier
+        hostname: web
+networks:
+    front-tier:
+    back-tier:
