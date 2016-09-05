@@ -16,7 +16,7 @@ services:
     phpmyadmin:
       image: phpmyadmin/phpmyadmin
       links:
-          - mysql
+          - mysql:db
       ports:
           - "81:80"
       networks:
@@ -25,11 +25,11 @@ services:
     web:
         image: hitalos/laravel:latest
         ports:
-            - 82:80
+            - 80:80
         links:
             - mysql
         volumes:
-            - /app:/var/www
+            - ./app:/var/www
         networks:
             - back-tier
             - front-tier
